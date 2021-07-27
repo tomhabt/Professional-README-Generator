@@ -1,39 +1,42 @@
-// TODO: Include packages needed for this application
+// packages needed for this application
 const fs = require('fs');
 const inquirer = require('inquirer');
+
+
 const generateMarkdown = require('./utils/generateMarkdown.js');
-// TODO: Create an array of questions for user input
+
+// an array of questions for user input
 let questions = [
     {
         type: 'input',
         name: 'name',
-        message: 'What is the title of your project? (Required)',
+        message: 'What is your name? (Required)',
+        // validate property to check that the user provided an input
         validate: nameInput => {
             if (nameInput) {
                 return true;
             } else {
-                console.log('Please enter your project name!');
+                console.log('Please enter your name!');
             return false;
              }
         }
-    },
-    {
+    },{
         type: 'input',
-        name: 'introduction',
-        message: 'Provide details about the repository of your project? (Required)',
-        validate: introductionInput => {
-            if (introductionInput) {
+        name: 'title',
+        message: 'Title of your project? (Required)',
+        // validate property to check that the user provided an input
+        validate: titleInput => {
+            if (titleInput) {
                 return true;
             } else {
-                console.log('Please enter a brief description!');
+                console.log('Please enter your project title!');
             return false;
              }
         }
-    },
-    {
+    },{
         type: 'input',
-        name: 'about',
-        message: 'Provide a detail description about your project? (Required)',
+        name: 'description',
+        message: 'Description about your project? (Required)',
         validate: aboutInput => {
             if (aboutInput) {
                 return true;
@@ -42,72 +45,152 @@ let questions = [
             return false;
              }
         }
-    },
-    {
+    },{
         type: 'confirm',
         name: 'confirmIfContribute',
-        message: 'Are there any contributors participated in your project?',
+        message: 'Any contributors participated in your project?',
         default: true
-    },
-    {
+    },{
         type: 'input',
         name: 'contribute',
-        message: 'Describe how others had contributed in your project.',
-        when: ({ confirmIfContribute }) => confirmIfContribute
-    },
-    {
-        type: 'confirm',
-        name: 'confirmForSpecialsteps',
-        message: 'Are there any steps required to run your project?',
-        default: true,
-    },
-    {
+        message: 'Provide Names? (Required) (use comma between names)',
+        when: ({ confirmIfContribute }) => confirmIfContribute,
+        validate: contributeInput => {
+            if (contributeInput) {
+                return true;
+            } else {
+                console.log('Please enter Names!');
+            return false;
+             }
+        }
+    },{
         type: 'input',
-        name: 'specialSteps',
-        message: 'What are these steps required to install your project?',
-        when: ({ confirmForSpecialSteps }) => confirmForSpecialSteps
-    },
-    {
+        name: 'howContribute',
+        message: 'What was the contribution about? (Required) (place a comma between each)',
+        when: ({ confirmIfContribute }) => confirmIfContribute,
+        validate: howContributeInput => {
+            if (howContributeInput) {
+                return true;
+            } else {
+                console.log('Please enter what others contibute towards your project!');
+            return false;
+             }
+        }
+    },{
+        type: 'confirm',
+        name: 'confirmForTOC',
+        message: 'Do you need a Table of Content in your README?',
+        default: true
+    },{
+        type: 'input',
+        name: 'tableOfContents',
+        message: 'Table of Conetnts (Press Enter)',
+        when: ({ confirmForTOC}) => confirmForTOC
+        
+    },{
+        type: 'checkbox',
+        name: 'methods',
+        message: 'Checkmark any kinds of packages or methods that was used to run your app? (Check all that apply)',
+        choices: ['FS', 'Inquirer', 'Util', 'jest', 'jQuery', 'Bootstrap', 'Node']
+    },{
+        type: 'confirm',
+        name: 'confirmForInstallation',
+        message: 'Any installation required by the user to run your project?',
+        default: true,
+    },{
+        type: 'input',
+        name: 'installation',
+        message: 'Please specify the installations?',
+        when: ({ confirmForInstallation }) => confirmForInstallation
+    },{
+        type: 'input',
+        name: 'license',
+        message: 'What liscence is being used? ',
+        
+    },{
+        type: 'input',
+        name: 'badge',
+        message: 'What badges is being used? ',
+    },{
+        type: 'input',
+        name: 'usage',
+        message: 'How is the app used for?',
+       
+    },{
         type: 'confirm',
         name: 'confirmForSpecialInstruction',
-        message: 'Do you have any special instructions and examples how to use your project?',
+        message: 'Do you have any other special instructions how to use your project?',
         default: true,
-    },
-    {
+    },{
         type: 'input',
-        name: 'specialInstructions',
-        message: 'Provide these instructions and examples for use. Include screenshots as needed.',
+        name: 'specialInstruction',
+        message: 'Please specify?',
         when: ({ confirmForSpecialInstruction }) => confirmForSpecialInstruction
-    },
-    {
+    },{
         type: 'checkbox',
         name: 'technologies',
         message: 'What are the technologies you have used in your project? (Check all that apply)',
-        choices: ['JavaScript', 'HTML', 'CSS', 'ES6', 'jQuery', 'Bootstrap', 'Node']
-    },
-    {
+        choices: ['JavaScript',  'HTML',  'CSS',  'ES6', 'jQuery',  'Bootstrap',  'Node']
+    },{
         type: 'input',
-          name: 'link',
-          message: 'Enter the GitHub link to your project. (Required)',
-          validate: linkInput => {
-            if (linkInput) {
+        name: 'username',
+        message: 'What is your Github username? (Required)',
+        validate: usernameInput => {
+            if (usernameInput) {
+                return true;
+            } else {
+                console.log('Please enter your Github username!');
+            return false;
+             }
+        }  
+    },{
+        type: 'input',
+          name: 'directoryName',
+          message: 'Enter the project"s  GitHub directory name. (Required)',
+          validate: directoryNameInput => {
+            if (directoryNameInput) {
               return true;
             } else {
-              console.log('You need to enter a project GitHub link!');
+              console.log('You need to enter the  project directory name which appears in your repo!');
               return false;
             }
           }
     } 
 ];
-    // TODO: Create a function to initialize app
-    const init = () => inquirer.prompt (questions);
+   
+// function to write README file
+function writeFile(data) {
 
-// TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+    fs.writeFile('./README.md', data, err => {
+       
+        console.log(data)
+        if (err) {
+            return console.log(err)
+        } else {
+            console.log("success")
+        }
+    })
 
-// TODO: Create a function to initialize app
-// function init() {}
+}
+
+//  function to initialize app
+ function init() {
+    inquirer.prompt (questions)
+    // .then(initializeData => console.log(initializeData))
+        .then(function (data) {
+            return generateMarkdown(data);
+        })
+        .then(function (README) {
+           return writeFile(README);
+        })
+        .then(function(data) {
+           console.log(data);
+        })
+        .catch(function(err){
+            console.log(err);
+        })       
+};
 
 // Function call to initialize app
-init()
-    .then(initializeData => console.log(initializeData));
+init();
+    
