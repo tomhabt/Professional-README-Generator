@@ -48,7 +48,7 @@ let questions = [
     },{
         type: 'confirm',
         name: 'confirmIfContribute',
-        message: 'Any contributors participated in your project?',
+        message: 'Any contributors participated in your project? (Optional)',
         default: true
     },{
         type: 'input',
@@ -77,20 +77,13 @@ let questions = [
              }
         }
     },{
-        type: 'confirm',
-        name: 'confirmForTOC',
-        message: 'Do you need a Table of Content in your README?',
-        default: true
-    },{
         type: 'input',
         name: 'tableOfContents',
-        message: 'Table of Conetnts (Press Enter)',
-        when: ({ confirmForTOC}) => confirmForTOC
-        
+        message: 'Table of Contents will be included in you README file (Press Enter)',
     },{
         type: 'checkbox',
         name: 'methods',
-        message: 'Checkmark any kinds of packages or methods that was used to run your app? (Check all that apply)',
+        message: 'Toggle if any kinds of packages or methods that was used to run your app? (Check all that apply)',
         choices: ['FS', 'Inquirer', 'Util', 'jest', 'jQuery', 'Bootstrap', 'Node']
     },{
         type: 'confirm',
@@ -100,21 +93,37 @@ let questions = [
     },{
         type: 'input',
         name: 'installation',
-        message: 'Please specify the installations?',
-        when: ({ confirmForInstallation }) => confirmForInstallation
+        message: 'Please specify the installations? (Required)',
+        when: ({ confirmForInstallation }) => confirmForInstallation,
+        validate: installationInput => {
+            if (installationInput) {
+                return true;
+            } else {
+                console.log('Please enter your Github username!');
+            return false;
+             }
+        }  
     },{
         type: 'input',
         name: 'license',
-        message: 'What liscence is being used? ',
+        message: 'What liscence is being used? (Press Enter if None) ',
         
     },{
         type: 'input',
         name: 'badge',
-        message: 'What badges is being used? ',
+        message: 'What badges is being used? (Press Enter if None)  ',
     },{
         type: 'input',
         name: 'usage',
-        message: 'How is the app used for?',
+        message: 'How is the app used for? (Required)',
+        validate: usageInput => {
+            if (usageInput) {
+                return true;
+            } else {
+                console.log('This question has be answered to go to the next');
+            return false;
+             }
+        }  
        
     },{
         type: 'confirm',
@@ -125,7 +134,15 @@ let questions = [
         type: 'input',
         name: 'specialInstruction',
         message: 'Please specify?',
-        when: ({ confirmForSpecialInstruction }) => confirmForSpecialInstruction
+        when: ({ confirmForSpecialInstruction }) => confirmForSpecialInstruction,
+        validate: specialInstructionInput => {
+            if (specialInstructionInput) {
+                return true;
+            } else {
+                console.log('This question has be answered to go to the next');
+            return false;
+             }
+        }  
     },{
         type: 'checkbox',
         name: 'technologies',
@@ -146,7 +163,7 @@ let questions = [
     },{
         type: 'input',
           name: 'directoryName',
-          message: 'Enter the project"s  GitHub directory name. (Required)',
+          message: 'Enter GitHub directory name of your project.(Required)',
           validate: directoryNameInput => {
             if (directoryNameInput) {
               return true;
@@ -155,7 +172,19 @@ let questions = [
               return false;
             }
           }
-    } 
+    },{
+        type: 'input',
+          name: 'email',
+          message: 'Enter your valid email address. (Required)',
+          validate: email => {
+            if (email) {
+            return true;
+            } else {
+            console.log('You need to enter a valid email address!');
+            return false;
+          }
+        }
+    }
 ];
    
 // function to write README file
