@@ -1,3 +1,7 @@
+1. Video demonstration for the typical user flow through the application (Part 1)
+Link: https://drive.google.com/file/d/1ZT-ZVyzjf4nrxe2z1acZupx6fwOrG2yh/view?usp=sharing
+2. Video demonstration for the typical user flow through the application (Part 2)
+Link: https://drive.google.com/file/d/158-z08KDNLp-mJ8Y_Ofqg6KgSt9_x0qD/view?usp=sharing
 
   # Professional README Generator
   https://github.com/tomhabt/Professional-README-Generator
